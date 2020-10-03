@@ -1,3 +1,5 @@
+
+
 // Dependencies
 var express = require('express');
 var http = require('http');
@@ -40,19 +42,26 @@ io.on('connection', function(socket) {
         };
     });
     socket.on('movement', function(data) {
-        var player = players[socket.id] || {};
+        var player;
+        if(!(socket.id in players)) {
+            players[socket.id] = new Player();
+        }
+        player = players[socket.id]
+        var xMovement = 0;
+        var yMovement = 0;
         if (data.left) {
-            player.x -= 5;
+            xMovement -= 5
         }
         if (data.up) {
-            player.y -= 5;
+            yMovement -= 5;
         }
         if (data.right) {
-            player.x += 5;
+            xMovement += 5
         }
         if (data.down) {
-            player.y += 5;
+            yMovement += 5;
         }
+        player.move(xMovement, yMovement)
     });
 });
 
@@ -62,3 +71,16 @@ io.on('connection', function(socket) {
     // remove disconnected player
   });
 });
+
+class Player{
+    constructor(x = 300, y = 300) {
+        this.x = x;
+        this.y = y;
+    }
+    move(xMovement,yMovement){
+        this.x += xMovement;
+        this.x = this.x > 790 ? 790 : this.x < 10 ? 10 : this.x;
+        this.y += yMovement;
+        this.y = this.y > 590 ? 590 : this.y < 10 ? 10 : this.y;
+    }
+}
