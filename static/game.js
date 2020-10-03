@@ -1,7 +1,7 @@
 var socket = io();
-socket.on('message', function(data)) {
+socket.on('message', function(data) {
     console.log(data);
-};
+});
 
 
 
@@ -13,7 +13,7 @@ var movement = {
 }
 
 // tells program how to respond when keys are pressed
-document.addEventListener('keydown', function(event)) {
+document.addEventListener('keydown', function(event){
     switch (event.keyCode) {
     case 65: // if user presses 'A'
         movement.left = true;
@@ -28,7 +28,7 @@ document.addEventListener('keydown', function(event)) {
         movement.down = true;
         break;
     }
-};
+});
 
 // tells program how to respond when keys are released
 document.addEventListener('keyup', function(event) {
@@ -46,7 +46,7 @@ document.addEventListener('keyup', function(event) {
                 movement.down = false;
                 break;
     }
-};
+});
 
 // alerts server that new player has been added, creates loop to update keyboard input of new player
 // to the server 60 times per second
