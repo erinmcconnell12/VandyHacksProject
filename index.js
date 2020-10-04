@@ -18,8 +18,6 @@ app.get('/', function(request, response) {
     response.sendFile(path.join(__dirname, '/static/index.html'));
   });
 
-
-
   // Starts the server.
 server.listen(5000, function() {
     console.log('Starting server on port 5000');
@@ -27,6 +25,7 @@ server.listen(5000, function() {
   
 // Add the WebSocket handlers
 io.on('connection', function(socket) {
+    console.log('a user connected');
 });
 
 setInterval(function() {
@@ -35,6 +34,7 @@ setInterval(function() {
 
 var players = {};
 io.on('connection', function(socket) {
+    socket.broadcast.emit('hi');
     socket.on('new player', function() {
         players[socket.id] = {
             x: 300,
@@ -71,6 +71,7 @@ io.on('connection', function(socket) {
 io.on('connection', function(socket) {
   socket.on('disconnect', function() {
     players[socket.id] = {};
+    console.log('user disconnected');
   });
 });
 
