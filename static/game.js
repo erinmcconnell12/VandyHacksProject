@@ -77,5 +77,9 @@ socket.on('state', function(players, dots) {
         context.arc(dot.x, dot.y, 20, 0, 2 * Math.PI);
         context.fill();
     }
+});
 
+socket.on('message', function (score) {
+    console.log(score);
+    document.getElementById("score").innerHTML = "Score " + score;
 });

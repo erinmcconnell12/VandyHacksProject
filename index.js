@@ -33,6 +33,8 @@ setInterval(function() {
     io.sockets.emit('state', players, dots);
 }, 1000 / 60);
 
+
+
 let players = {};
 let dots = [];
 io.on('connection', function(socket) {
@@ -59,20 +61,19 @@ io.on('connection', function(socket) {
         }
        player.move(xMovement, yMovement);
         for(let player in players){
-            let dotsToDelete = [];
             for(let i = 0; i < dots.length; i++){
                 try {
-                    if( dots[i].x + 20 > players[player].x && dots[i].x < players[player].x  && dots[i].y + 20 > players[player].y&& dots[i].y < players[player].y){
-                        dots.splice(i, i+1)
-                    }    
+                    if( dots[i].x + 20 > players[player].x && dots[i].x - 20 < players[player].x  && dots[i].y + 20 > players[player].y&& dots[i].y - 20 < players[player].y){
+                        dots.splice(i, i+1);
+                        players[player].addtoCounter();
+                        dots.push({x: Math.floor(Math.random() * 780) +20, y: Math.floor(Math.random() * 580)+20})
+                        socket.emit('message',players[player].counter );
+                        //socket.broadcast.to(socket.id).emit('message', 'for your eyes only');
+
+                    }
                 }
                 catch (e) {
-                    
                 }
-                
-            }
-            for(let i = 0; i < dotsToDelete.length; i++){
-                delete dots[dotsToDelete[i]];
             }
         }
 
