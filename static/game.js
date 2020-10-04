@@ -61,7 +61,7 @@ var canvas = document.getElementById('canvas');
 canvas.width = 800;
 canvas.height = 600;
 var context = canvas.getContext('2d');
-socket.on('state', function(players) {
+socket.on('state', function(players, dots) {
   context.clearRect(0, 0, 800, 600);
   context.fillStyle = '#' + randomColor;
   for (var id in players) {
@@ -77,5 +77,5 @@ socket.on('state', function(players) {
         context.arc(dot.x, dot.y, 20, 0, 2 * Math.PI);
         context.fill();
     }
-});
 
+});
