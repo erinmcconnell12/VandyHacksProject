@@ -29,23 +29,19 @@ io.on('connection', function(socket) {
 });
 
 setInterval(function() {
-    io.sockets.emit('state', players);
+    io.sockets.emit('state', players, dots);
 }, 1000 / 60);
 
-var players = {};
+let players = {};
+let dots = [];
 io.on('connection', function(socket) {
     socket.broadcast.emit('hi');
     socket.on('new player', function() {
-        players[socket.id] = {
-            x: 300,
-            y: 300
-        };
+        players[socket.id] = new Player();
+        dots.push({x: Math.floor(Math.random() * 300), y: Math.floor(Math.random() * 300)})
     });
     socket.on('movement', function(data) {
         var player;
-        if(!(socket.id in players)) {
-            players[socket.id] = new Player();
-        }
         player = players[socket.id]
         var xMovement = 0;
         var yMovement = 0;
@@ -61,11 +57,29 @@ io.on('connection', function(socket) {
         if (data.down) {
             yMovement += 5;
         }
-        players[socket.id].x += xMovement;
-        players[socket.id].x = players[socket.id].x > 790 ? 790 : players[socket.id].x < 10 ? 10 : players[socket.id].x;
-        players[socket.id].y += yMovement;
-        players[socket.id].y = players[socket.id].y > 590 ? 590 : players[socket.id].y < 10 ? 10 : players[socket.id].y;
+       player.move(xMovement, yMovement);
+        for(let player in players){
+            let dotsToDelete = [];
+            for(let i = 0; i < dots.length; i++){
+                try {
+                    if( dots[i].x + 20 > players[player].x && dots[i].x < players[player].x  && dots[i].y + 20 > players[player].y&& dots[i].y < players[player].y){
+                        dots.splice(i, i+1)
+                    }    
+                }
+                catch (e) {
+                    
+                }
+                
+            }
+            for(let i = 0; i < dotsToDelete.length; i++){
+                delete dots[dotsToDelete[i]];
+            }
+        }
+
+
     });
+
+
 });
 
 io.on('connection', function(socket) {
@@ -76,8 +90,24 @@ io.on('connection', function(socket) {
 });
 
 class Player{
-    constructor(x = 300, y = 300) {
+    constructor(x =-1, y =-1) {
+        if(x === -1){
+            x = Math.floor(Math.random() * 500);
+        }
+        if(y === -1){
+            y = Math.floor(Math.random() * 500);
+        }
         this.x = x;
         this.y = y;
+        this.counter = 0;
+    }
+    move(xMovement, yMovement){
+        this.x += xMovement;
+        this.x = this.x > 790 ? 790 : this.x < 10 ? 10 : this.x;
+        this.y += yMovement;
+        this.y = this.y > 590 ? 590 : this.y < 10 ? 10 : this.y;
+    }
+    addtoCounter(){
+        this.counter+= 1;
     }
 }
