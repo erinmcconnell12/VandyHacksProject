@@ -56,11 +56,13 @@ setInterval(function() {
 }, 1000 / 60);
 
 
+
+
 var canvas = document.getElementById('canvas');
 canvas.width = 800;
 canvas.height = 600;
 var context = canvas.getContext('2d');
-socket.on('state', function(players) {
+socket.on('state', function(players, dots) {
   context.clearRect(0, 0, 800, 600);
   context.fillStyle = 'green';
   for (var id in players) {
@@ -69,19 +71,13 @@ socket.on('state', function(players) {
     context.arc(player.x, player.y, 10, 0, 2 * Math.PI);
     context.fill();
   }
+  context.fillStyle = 'red';
+  for(var id in dots) {
+      var dot =dots[id];
+      context.beginPath();
+      context.arc(dot.x, dot.y, 20, 0, 2 * Math.PI);
+      context.fill();
+  }
 });
 
-var canvas = document.getElementById('canvas');
-canvas.width = 800;
-canvas.height = 600;
-var context = canvas.getContext('2d');
-socket.on('state', function(players) {
-    context.clearRect(0, 0, 800, 600);
-    context.fillStyle = 'green';
-    for (var id in players) {
-        var player = players[id];
-        context.beginPath();
-        context.arc(player.x, player.y, 10, 0, 2 * Math.PI);
-        context.fill();
-    }
-});
+
