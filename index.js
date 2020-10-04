@@ -72,6 +72,7 @@ io.on('connection', function(socket) {
                 
             }
             for(let i = 0; i < dotsToDelete.length; i++){
+                console.log('user has eaten the dot!')
                 delete dots[dotsToDelete[i]];
             }
         }
