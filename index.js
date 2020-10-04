@@ -69,9 +69,8 @@ io.on('connection', function(socket) {
 });
 
 io.on('connection', function(socket) {
-  // other handlers ...
   socket.on('disconnect', function() {
-    // remove disconnected player
+    players[socket.id] = {};
   });
 });
 

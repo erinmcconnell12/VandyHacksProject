@@ -55,6 +55,7 @@ setInterval(function() {
     socket.emit('movement', movement);
 }, 1000 / 60);
 
+const randomColor = Math.floor(Math.random()*16777215).toString(16);
 
 var canvas = document.getElementById('canvas');
 canvas.width = 800;
@@ -62,7 +63,7 @@ canvas.height = 600;
 var context = canvas.getContext('2d');
 socket.on('state', function(players) {
   context.clearRect(0, 0, 800, 600);
-  context.fillStyle = 'green';
+  context.fillStyle = '#' + randomColor;
   for (var id in players) {
     var player = players[id];
     context.beginPath();
@@ -71,17 +72,3 @@ socket.on('state', function(players) {
   }
 });
 
-var canvas = document.getElementById('canvas');
-canvas.width = 800;
-canvas.height = 600;
-var context = canvas.getContext('2d');
-socket.on('state', function(players) {
-    context.clearRect(0, 0, 800, 600);
-    context.fillStyle = 'green';
-    for (var id in players) {
-        var player = players[id];
-        context.beginPath();
-        context.arc(player.x, player.y, 10, 0, 2 * Math.PI);
-        context.fill();
-    }
-});
