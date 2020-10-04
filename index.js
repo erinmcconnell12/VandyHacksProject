@@ -61,7 +61,10 @@ io.on('connection', function(socket) {
         if (data.down) {
             yMovement += 5;
         }
-        player.move(xMovement, yMovement)
+        players[socket.id].x += xMovement;
+        players[socket.id].x = players[socket.id].x > 790 ? 790 : players[socket.id].x < 10 ? 10 : players[socket.id].x;
+        players[socket.id].y += yMovement;
+        players[socket.id].y = players[socket.id].y > 590 ? 590 : players[socket.id].y < 10 ? 10 : players[socket.id].y;
     });
 });
 
@@ -76,11 +79,5 @@ class Player{
     constructor(x = 300, y = 300) {
         this.x = x;
         this.y = y;
-    }
-    move(xMovement,yMovement){
-        this.x += xMovement;
-        this.x = this.x > 790 ? 790 : this.x < 10 ? 10 : this.x;
-        this.y += yMovement;
-        this.y = this.y > 590 ? 590 : this.y < 10 ? 10 : this.y;
     }
 }
